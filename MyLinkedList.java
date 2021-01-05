@@ -26,6 +26,7 @@ public class MyLinkedList{
       n.setdata(value);
       start = n;
       end = n;
+      size++;
       return true;
     }
     Node n = new Node();
@@ -39,17 +40,18 @@ public class MyLinkedList{
 
   public boolean add(int index, String value) {
     if (index<0 || index>size) return false;
-    if (index==size()) return add(value);
+    if (index==size) return add(value);
     Node cur = atindex(index);
     Node toadd = new Node();
     toadd.setdata(value);
     toadd.setnext(cur);
-    toadd.setprev(cur.getprev());
-    cur.setprev(toadd);
-    if (cur.getprev() != null) {
+    if (index==0) start = cur;
+    if (index>0) {
       cur = cur.getprev();
+      toadd.setprev(cur);
       cur.setnext(toadd);
     }
+    toadd.getnext().setprev(toadd);
     size++;
     return true;
   }
@@ -69,11 +71,18 @@ public class MyLinkedList{
   public String toString() {
     String ans = "[";
     Node cur = start;
-    for (int i = 0; i < size; i++) {
+    while (cur != end) {
       ans += cur.getdata();
-      if (i < size - 1) ans += ", ";
+      ans += ", ";
       cur = cur.getnext();
     }
-    return ans + "]";
+    return ans + cur.getdata() + "]";
+  //   String ans = "]";
+  //   Node cur = end;
+  //   while (cur != start) {
+  //     ans = ", " + cur.getdata() + ans;
+  //     cur = cur.getprev();
+  //   }
+  //   return "[" + cur.getdata() + ans;
   }
 }

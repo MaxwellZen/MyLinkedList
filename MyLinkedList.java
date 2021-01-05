@@ -21,6 +21,13 @@ public class MyLinkedList{
   }
 
   public boolean add(String value) {
+    if (size==0) {
+      Node n = new Node();
+      n.setdata(value);
+      start = n;
+      end = n;
+      return true;
+    }
     Node n = new Node();
     n.setdata(value);
     n.setprev(end);
@@ -31,6 +38,8 @@ public class MyLinkedList{
   }
 
   public boolean add(int index, String value) {
+    if (index<0 || index>size) return false;
+    if (index==size()) return add(value);
     Node cur = atindex(index);
     Node toadd = new Node();
     toadd.setdata(value);

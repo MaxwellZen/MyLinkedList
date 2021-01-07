@@ -26,7 +26,7 @@ public class MyLinkedList{
     }
   }
 
-  public boolean add(String value) throws IndexOutOfBoundsException {
+  public boolean add(String value){
     Node n = new Node();
     n.setdata(value);
     if (size==0) {
@@ -40,9 +40,12 @@ public class MyLinkedList{
     return true;
   }
 
-  public void add(int index, String value) {
+  public void add(int index, String value) throws IndexOutOfBoundsException {
+    if (index<0 || index>size) {
+      throw new IndexOutOfBoundsException("index cannot be " + index);
+    }
     if (index==size) add(value);
-    else if (index>=0 && index<size){
+    else {
       Node cur = atindex(index);
       Node toadd = new Node();
       toadd.setdata(value);
@@ -55,12 +58,18 @@ public class MyLinkedList{
     }
   }
 
-  public String get(int index) {
+  public String get(int index) throws IndexOutOfBoundsException {
+    if (index<0 || index>=size) {
+      throw new IndexOutOfBoundsException("index cannot be " + index);
+    }
     Node cur = atindex(index);
     return cur.getdata();
   }
 
-  public String set(int index, String value) {
+  public String set(int index, String value) throws IndexOutOfBoundsException {
+    if (index<0 || index>=size) {
+      throw new IndexOutOfBoundsException("index cannot be " + index);
+    }
     Node cur = atindex(index);
     String temp = cur.getdata();
     cur.setdata(value);
@@ -97,33 +106,20 @@ public class MyLinkedList{
     if (index<0 || index>=size) {
       throw new IndexOutOfBoundsException("index cannot be " + index);
     }
-    if (size==1) {
-      String ans = start.getdata();
-      start=null;
-      end=null;
-      size=0;
-      return ans;
+    Node cur = atindex(index);
+    String ans = cur.getdata();
+    if (index>0) cur.getprev().setnext(cur.getnext());
+    else {
+      if (size>1) start.getnext().setprev(null);
+      start = start.getnext();
     }
-    else if (index==0) {
-      String ans = start.getdata();
-      start=start.getnext();
-      start.setprev(null);
-      size--;
-      return ans;
-    }
-    else if (index==size-1) {
-      String ans = end.getdata();
+    if (index<size-1) cur.getnext().setprev(cur.getprev());
+    else {
+      if (size>1) end.getprev().setnext(null);
       end = end.getprev();
-      end.setnext(null);
-      size--;
-      return ans;
-    } else {
-      Node cur = atindex(index);
-      cur.getnext().setprev(cur.getprev());
-      cur.getprev().setnext(cur.getnext());
-      size--;
-      return cur.getdata();
     }
+    size--;
+    return ans;
   }
   public void extend (MyLinkedList other) {
     end.setnext(other.start);

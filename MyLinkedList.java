@@ -26,7 +26,7 @@ public class MyLinkedList{
     }
   }
 
-  public boolean add(String value) {
+  public boolean add(String value) throws IndexOutOfBoundsException {
     Node n = new Node();
     n.setdata(value);
     if (size==0) {
@@ -82,5 +82,56 @@ public class MyLinkedList{
   //     cur = cur.getprev();
   //   }
   //   return "[" + cur.getdata() + ans;
+  }
+  public String toStringReversed() {
+    if (size==0) return "[]";
+    String ans = "[";
+    Node cur = end;
+    while (cur != start) {
+      ans += cur.getdata() + ", ";
+      cur = cur.getprev();
+    }
+    return ans + cur.getdata() + "]";
+  }
+  public String remove (int index) throws IndexOutOfBoundsException{
+    if (index<0 || index>=size) {
+      throw new IndexOutOfBoundsException("index cannot be " + index);
+    }
+    if (size==1) {
+      String ans = start.getdata();
+      start=null;
+      end=null;
+      size=0;
+      return ans;
+    }
+    else if (index==0) {
+      String ans = start.getdata();
+      start=start.getnext();
+      start.setprev(null);
+      size--;
+      return ans;
+    }
+    else if (index==size-1) {
+      String ans = end.getdata();
+      end = end.getprev();
+      end.setnext(null);
+      size--;
+      return ans;
+    } else {
+      Node cur = atindex(index);
+      cur.getnext().setprev(cur.getprev());
+      cur.getprev().setnext(cur.getnext());
+      size--;
+      return cur.getdata();
+    }
+  }
+  public void extend (MyLinkedList other) {
+    end.setnext(other.start);
+    other.start.setprev(end);
+    end = other.end;
+    size += other.size;
+    other.start = null;
+    other.end = null;
+    other.size = 0;
   }
 }

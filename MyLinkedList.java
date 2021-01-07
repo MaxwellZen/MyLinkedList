@@ -11,11 +11,9 @@ public class MyLinkedList{
   }
 
   private Node atindex(int index) {
-    int pos = 0;
     Node cur = start;
-    while (pos<index) {
+    for (int i = 0; i < index; i++) {
       cur = cur.getnext();
-      pos++;
     }
     return cur;
   }
@@ -28,32 +26,31 @@ public class MyLinkedList{
       end = n;
       size++;
       return true;
+    } else {
+      Node n = new Node();
+      n.setdata(value);
+      n.setprev(end);
+      end.setnext(n);
+      end = n;
+      size++;
+      return true;
     }
-    Node n = new Node();
-    n.setdata(value);
-    n.setprev(end);
-    end.setnext(n);
-    end = n;
-    size++;
-    return true;
   }
 
-  public boolean add(int index, String value) {
-    if (index<0 || index>size) return false;
-    if (index==size) return add(value);
-    Node cur = atindex(index);
-    Node toadd = new Node();
-    toadd.setdata(value);
-    toadd.setnext(cur);
-    if (index==0) start = cur;
-    if (index>0) {
-      cur = cur.getprev();
-      toadd.setprev(cur);
-      cur.setnext(toadd);
+  public void add(int index, String value) {
+    if (index<0 || index>size) {}
+    else if (index==size) {add(value);}
+    else {
+      Node cur = atindex(index);
+      Node toadd = new Node();
+      toadd.setdata(value);
+      toadd.setnext(cur);
+      toadd.setprev(cur.getprev());
+      if (index==0) start = toadd;
+      if (index>0) cur.getprev().setnext(toadd);
+      cur.setprev(toadd);
+      size++;
     }
-    toadd.getnext().setprev(toadd);
-    size++;
-    return true;
   }
 
   public String get(int index) {
@@ -77,7 +74,6 @@ public class MyLinkedList{
       cur = cur.getnext();
     }
     return ans + cur.getdata() + "]";
-  //   String ans = "]";
   //   Node cur = end;
   //   while (cur != start) {
   //     ans = ", " + cur.getdata() + ans;

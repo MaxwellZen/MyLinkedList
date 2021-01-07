@@ -11,43 +11,45 @@ public class MyLinkedList{
   }
 
   private Node atindex(int index) {
-    Node cur = start;
-    for (int i = 0; i < index; i++) {
-      cur = cur.getnext();
+    if (index <= size/2) {
+      Node cur = start;
+      for (int i = 0; i < index; i++) {
+        cur = cur.getnext();
+      }
+      return cur;
+    } else {
+      Node cur = end;
+      for (int i = size-1; i > index; i--) {
+        cur = cur.getprev();
+      }
+      return cur;
     }
-    return cur;
   }
 
   public boolean add(String value) {
+    Node n = new Node();
+    n.setdata(value);
     if (size==0) {
-      Node n = new Node();
-      n.setdata(value);
       start = n;
-      end = n;
-      size++;
-      return true;
     } else {
-      Node n = new Node();
-      n.setdata(value);
       n.setprev(end);
       end.setnext(n);
-      end = n;
-      size++;
-      return true;
     }
+    end = n;
+    size++;
+    return true;
   }
 
   public void add(int index, String value) {
-    if (index<0 || index>size) {}
-    else if (index==size) {add(value);}
-    else {
+    if (index==size) add(value);
+    else if (index>=0 && index<size){
       Node cur = atindex(index);
       Node toadd = new Node();
       toadd.setdata(value);
       toadd.setnext(cur);
       toadd.setprev(cur.getprev());
       if (index==0) start = toadd;
-      if (index>0) cur.getprev().setnext(toadd);
+      else cur.getprev().setnext(toadd);
       cur.setprev(toadd);
       size++;
     }
@@ -66,11 +68,11 @@ public class MyLinkedList{
   }
 
   public String toString() {
+    if (size==0) return "[]";
     String ans = "[";
     Node cur = start;
     while (cur != end) {
-      ans += cur.getdata();
-      ans += ", ";
+      ans += cur.getdata() + ", ";
       cur = cur.getnext();
     }
     return ans + cur.getdata() + "]";

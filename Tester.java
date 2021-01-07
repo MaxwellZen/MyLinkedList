@@ -3,6 +3,7 @@ import java.io.*;
 public class Tester {
   public static void main(String[] args) {
     MyLinkedList test = new MyLinkedList();
+    System.out.println(test);
     ArrayList<String> cmp = new ArrayList<String>();
     String[] datas = {"second", "tird", "fourth", "fifth", "sixth", "eighth", "ninth", "ten"};
     for (int i = 0; i < datas.length; i++) {
